@@ -5,7 +5,9 @@
   "main": "src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node src/index.js"
+    "start": "node src/index.js",
+    "install-deps": "apt update && apt install xvfb",
+    "k8-start": "xvfb-run -s '-ac -screen 0 3840x2160x24' node src/index.js"
   },
   "author": "",
   "license": "ISC",
