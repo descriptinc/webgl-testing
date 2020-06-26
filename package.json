@@ -1,0 +1,16 @@
+{
+  "name": "sample-gl",
+  "version": "1.0.0",
+  "description": "Sample headless gl test",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src/index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "canvas": "^2.6.1",
+    "gl": "^4.5.2"
+  }
+}
