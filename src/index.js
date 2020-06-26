@@ -8,7 +8,12 @@ const canvas = createCanvas(width, height);
 const ctx = canvas.getContext('2d');
 
 // Create context
-var gl = require('gl')(width, height, {preserveDrawingBuffer: true});
+var gl = require('gl')(width, height, {
+  preserveDrawingBuffer: true,
+  powerPreference: 'high-performance',
+  failIfMajorPerformanceCaveat: true,
+
+});
 
 /*============ Defining and storing the geometry =========*/
 
@@ -197,14 +202,22 @@ var animate = function(time) {
   gl.drawElements(gl.TRIANGLES, indices.length, gl.UNSIGNED_SHORT, 0);
 };
 
+function timeInSecs(time) {
+  return time[0] + time[1] / 1e9;
+}
+
 console.log('Starting animation...');
 const numFrames = 10000;
-const startTime = Date.now();
+const startTime = process.hrtime();
 for (let time = 0; time < numFrames; time += 1) {
   animate(time);
+  if (time % 1000 === 0) {
+    const elapsed = timeInSecs(process.hrtime(startTime));
+    console.log(`Elapsed: ${elapsed}, ${time} Frames, ${
+        Math.round(time / elapsed * 100) / 100} FPS`)
+  }
 }
-const endTime = Date.now();
+const totalElapsed = timeInSecs(process.hrtime(startTime));
 
-const time = (endTime - startTime) / 1000;
-console.log(
-    `Done (took ${time}s, or ${Math.round(numFrames / time * 100) / 100} FPS)`)
+console.log(`Done (took ${totalElapsed}s, or ${
+    Math.round(numFrames / totalElapsed * 100) / 100} FPS)`)
