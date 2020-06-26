@@ -199,12 +199,12 @@ var animate = function(time) {
 
 console.log('Starting animation...');
 const numFrames = 10000;
-const startTime = process.hrtime.bigint();
+const startTime = Date.now();
 for (let time = 0; time < numFrames; time += 1) {
   animate(time);
 }
-const endTime = process.hrtime.bigint();
+const endTime = Date.now();
 
-const time = Math.round(Number(endTime - startTime) / 1e7) / 100;
+const time = (endTime - startTime) / 1000;
 console.log(
     `Done (took ${time}s, or ${Math.round(numFrames / time * 100) / 100} FPS)`)
