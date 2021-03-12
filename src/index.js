@@ -10,10 +10,33 @@ const ctx = canvas.getContext('2d');
 // Create context
 var gl = require('gl')(width, height, {
   preserveDrawingBuffer: true,
-  powerPreference: 'high-performance',
+  powerPreference: 'high-performance', // not used by headless gl as far as I can tell
+  preferLowPowerToHighPerformance: false,
   failIfMajorPerformanceCaveat: true,
-
 });
+
+if (!gl) {
+  throw new Error('Could not create WebGL context');
+}
+
+console.log(`Made WebGL canvas ${gl.drawingBufferWidth} x ${gl.drawingBufferHeight}`)
+
+console.log(`WebGL Version: ${gl.getParameter(gl.VENDOR)} ${gl.getParameter(gl.VERSION)}, ${gl.getParameter(gl.SHADING_LANGUAGE_VERSION)}`);
+
+const glDebug = gl.getExtension('WEBGL_debug_renderer_info');
+if (glDebug) {
+  console.log(`WebGL Driver:${gl.getParameter(glDebug.UNMASKED_RENDERER_WEBGL)} (${gl.getParameter(glDebug.UNMASKED_VENDOR_WEBGL)})`);
+} else {
+  console.log(`WebGL Driver: -- could not load extension WEBGL_debug_renderer_info`);
+}
+
+const dimensions = gl.getParameter(gl.MAX_VIEWPORT_DIMS);
+console.log(`MAX_VIEWPORT_DIMS: ${dimensions[0]} x ${dimensions[1]}`);
+console.log(`MAX_RENDERBUFFER_SIZE: ${gl.getParameter(gl.MAX_RENDERBUFFER_SIZE)}`);
+console.log(`MAX_TEXTURE_SIZE: ${gl.getParameter(gl.MAX_TEXTURE_SIZE)}`);
+console.log(`MAX_TEXTURE_IMAGE_UNITS: ${gl.getParameter(gl.MAX_TEXTURE_IMAGE_UNITS)}`);
+console.log(`MAX_VERTEX_TEXTURE_IMAGE_UNITS: ${gl.getParameter(gl.MAX_VERTEX_TEXTURE_IMAGE_UNITS)}`);
+console.log(`MAX_COMBINED_TEXTURE_IMAGE_UNITS: ${gl.getParameter(gl.MAX_COMBINED_TEXTURE_IMAGE_UNITS)}`);
 
 /*============ Defining and storing the geometry =========*/
 
